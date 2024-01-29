@@ -1,0 +1,47 @@
+
+
+
+/* .simple-keyboard.hg-layout-default .hg-button.hg-selected:active {
+  background: rgba(173, 173, 54, 0.7);
+  color: white;
+} */
+
+.simple-keyboard.hg-layout-default .hg-button.hg-used {
+  background: #888 !important;
+  color: white !important;
+  text-transform: uppercase !important;
+}
+.simple-keyboard.hg-layout-default .hg-button.hg-wrongpos {
+  background: white !important;
+  color: black !important;
+  text-transform: uppercase !important;
+}
+
+.simple-keyboard.hg-layout-default .hg-button.hg-success {
+  background: rgba(244, 244, 76, 1) !important;
+  color: black !important;
+  text-transform: uppercase !important;
+}
+
+
+.simple-keyboard.hg-layout-default .hg-button.hg-standardBtn {
+  background: #111;
+  color: white;
+  text-transform: uppercase;
+  border: 1px solid gray;
+}
+
+
+.simple-keyboard.hg-layout-default .hg-button.hg-standardBtn:active {
+  background: #444;
+  color: white;
+  text-transform: uppercase;
+}
+
+.simple-keyboard.hg-theme-default.myTheme {
+  /* border: 2px solid rgba(244, 244, 76, 0.7); */
+  background-color: #111;
+  border-radius: 1;
+  /* margin: 10px; */
+  /* width: calc(100% - 20px); */
+}

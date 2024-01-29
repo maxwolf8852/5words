@@ -1,0 +1,53 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.5",
+    "@mui/material": "^5.15.5",
+    "@mui/x-charts": "^6.19.1",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^12.0.0",
+    "@testing-library/user-event": "^13.2.1",
+    "assert": "^2.1.0",
+    "buffer": "^6.0.3",
+    "javascript-time-ago": "^2.5.9",
+    "react": "^18.2.0",
+    "react-card-flip": "^1.2.2",
+    "react-cookie": "^7.0.1",
+    "react-dom": "^18.2.0",
+    "react-loader-spinner": "^6.1.6",
+    "react-scripts": "5.0.1",
+    "react-simple-keyboard": "^3.7.68",
+    "react-time-ago": "^7.2.1",
+    "react-use-websocket": "^4.5.0",
+    "sha.js": "2.4.9",
+    "web-vitals": "^2.1.0"
+  },
+  "scripts": {
+    "start": "HTTPS=false PORT=9999 react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

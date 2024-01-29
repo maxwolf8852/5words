@@ -1,0 +1,48 @@
+version: "3.9"
+services:
+  db:
+    image: "postgres:16.1-alpine"
+    environment:
+      - POSTGRES_USER=maxadmin
+      - POSTGRES_PASSWORD=max3101
+      - POSTGRES_DB=main
+      - LC_COLLATE=ru_RU.utf8
+      - LC_CTYPE=ru_RU.utf8
+    ports:
+      - "1111:5432"
+    volumes:
+      - ./database/data:/var/lib/postgresql/data/
+      - ./database/init:/docker-entrypoint-initdb.d
+    restart: always
+    networks:
+      - netone
+
+  server:
+    build:
+      dockerfile: ./cmd/server/Dockerfile
+      context: ./server
+    entrypoint: ["build/server"]
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "8435:8435"
+    networks:
+      - netone
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    depends_on:
+      - server
+    restart: always
+    ports:
+      - "80:1337"
+    networks:
+      - netone
+
+networks:
+  netone:
+    name: "netone"
+    driver: bridge
