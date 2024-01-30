@@ -36,7 +36,7 @@ const LetterBox = ({ letter, color, wrongWord, flippable, i }) => {
           variant="h3"
           sx={{
             color:
-              wrongWord === 0 ? "white" : wrongWord === 1 ? "red" : "purple",
+              wrongWord === 2 ? "purple" : wrongWord === 1 ? "red" : "white",
           }}
         >
           {letter}
@@ -61,7 +61,7 @@ const LetterBox = ({ letter, color, wrongWord, flippable, i }) => {
           variant="h3"
           sx={{
             color:
-              wrongWord === 0 ? "white" : wrongWord === 1 ? "red" : "purple",
+              wrongWord === 2 ? "purple" : wrongWord === 1 ? "red" : "white",
           }}
         >
           {letter}

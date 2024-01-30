@@ -127,10 +127,11 @@ func (h *Handler) Attempt(c *fiber.Ctx) error {
 	word := c.Params("word", "")
 
 	if utf8.RuneCountInString(word) != 5 {
-		return c.Status(fiber.StatusConflict).SendString("incorrect word")
+		return c.Status(fiber.StatusConflict).JSON(fiber.Map{"message": "incorrect word"})
 	}
 
 	ctx := c.Context()
+	
 
 	wfRows, err := h.q.WordFreq(ctx, database.WordFreqParams{UserID: userId, Limit: 3})
 	if err != nil {
@@ -138,16 +139,20 @@ func (h *Handler) Attempt(c *fiber.Ctx) error {
 		return err
 	}
 
-	if slices.ContainsFunc(wfRows, func(row database.WordFreqRow) bool { return row.UserWord == word }) {
-		return c.Status(fiber.StatusConflict).SendString("wordfreq")
-	}
-
 	fmt.Println(userId, word)
 
 	curWordId, err := h.q.CurrentWord(ctx)
-
 	if err != nil {
 		return err
+	}
+
+	curWord, err := h.q.GetWord(ctx, curWordId)
+	if err != nil {
+		return err
+	}
+
+	if slices.ContainsFunc(wfRows, func(row database.WordFreqRow) bool { return (row.UserWord == word) && (word != curWord) }) {
+		return c.Status(fiber.StatusConflict).JSON(fiber.Map{"message": "wordfreq"})
 	}
 
 	if comp, err := h.q.CheckCompleted(ctx, database.CheckCompletedParams{UserID: userId, ID: curWordId}); err != nil || comp.(bool) {
@@ -157,7 +162,7 @@ func (h *Handler) Attempt(c *fiber.Ctx) error {
 	wordId, err := h.q.WordId(ctx, word)
 
 	if err != nil {
-		return c.Status(fiber.StatusConflict).SendString("incorrect word")
+		return c.Status(fiber.StatusConflict).JSON(fiber.Map{"message": "incorrect word"})
 	}
 
 	fmt.Println(wordId)
@@ -168,12 +173,12 @@ func (h *Handler) Attempt(c *fiber.Ctx) error {
 	}
 
 	if len(attempts) > 5 {
-		return c.Status(fiber.StatusConflict).SendString("incorrect word")
+		return c.Status(fiber.StatusConflict).JSON(fiber.Map{"message": "incorrect word"})
 	}
 
 	for _, att := range attempts {
 		if att.UserWord == word {
-			return c.Status(fiber.StatusConflict).SendString("incorrect word")
+			return c.Status(fiber.StatusConflict).JSON(fiber.Map{"message": "incorrect word"})
 		}
 	}
 
@@ -189,11 +194,6 @@ func (h *Handler) Attempt(c *fiber.Ctx) error {
 	}
 
 	completed := false
-
-	curWord, err := h.q.GetWord(ctx, curWordId)
-	if err != nil {
-		return err
-	}
 
 	for _, attempt := range attempts {
 

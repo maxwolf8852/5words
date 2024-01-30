@@ -33,6 +33,7 @@ const Home = ({ logout }) => {
   const [wrongposLetters, setWrongposLetters] = useState("");
   const [wrongWord, setWrongWord] = useState();
   const [edited, setEdited] = useState(0);
+  const [attSended, setAttSended] = useState(false);
 
   var defaults = {
     spread: 360,
@@ -63,11 +64,13 @@ const Home = ({ logout }) => {
     if (button === "{enter}" && curAttempt.length === 5) {
       console.log("Button pressed", button);
       const [resp, err] = await apiSendAttempt(curAttempt);
+      setAttSended(true);
       if (err === null) {
         keyboard.current.input = { default: "" };
         setCurAttempt("");
         const resp2 = updateStatus();
       } else {
+        console.log(err, err.message)
         if (err.message === "wordfreq") {
           setWrongWord(2);
         } else {
@@ -104,12 +107,15 @@ const Home = ({ logout }) => {
   }, []);
 
   useEffect(() => {
-    if (correctWord !== "") {
+    if (attSended && correctWord) {
       setTimeout(shoot, 0);
       setTimeout(shoot, 100);
       setTimeout(shoot, 200);
+      setTimeout(shoot, 300);
+      setTimeout(shoot, 400);
+      setTimeout(shoot, 500);
     }
-  }, [correctWord]);
+  }, [correctWord, attSended]);
 
   useEffect(() => {
     if (attempts) {

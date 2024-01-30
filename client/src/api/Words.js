@@ -10,6 +10,10 @@ export const apiStatus = async () => {
 
     const j = await response.json();
 
+    if(response.status != 200) {
+      return [null, j]
+    }
+
     return [j, null];
   } catch (e) {
     console.error(e);
@@ -26,7 +30,14 @@ export const apiSendAttempt = async (attempt) => {
       //   mode: "no-cors",
     });
 
+
     const j = await response.json();
+
+    console.log("resp", j)
+
+    if(response.status != 200) {
+      return [null, j]
+    }
 
     return [j, null];
   } catch (e) {
@@ -44,6 +55,10 @@ export const apiGetStatistics = async () => {
     });
 
     const j = await response.json();
+
+    if(response.status != 200) {
+      return [null, j]
+    }
 
     return [j, null];
   } catch (e) {
