@@ -32,7 +32,13 @@ const LetterBox = ({ letter, color, wrongWord, flippable, i }) => {
         }}
         className="front"
       >
-        <Typography variant="h3" sx={{ color: wrongWord ? "red" : "white" }}>
+        <Typography
+          variant="h3"
+          sx={{
+            color:
+              wrongWord === 0 ? "white" : wrongWord === 1 ? "red" : "purple",
+          }}
+        >
           {letter}
         </Typography>
       </Box>
@@ -51,7 +57,13 @@ const LetterBox = ({ letter, color, wrongWord, flippable, i }) => {
         }}
         className="back"
       >
-        <Typography variant="h3" sx={{ color: wrongWord ? "red" : "white" }}>
+        <Typography
+          variant="h3"
+          sx={{
+            color:
+              wrongWord === 0 ? "white" : wrongWord === 1 ? "red" : "purple",
+          }}
+        >
           {letter}
         </Typography>
       </Box>

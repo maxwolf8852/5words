@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"slices"
 	"unicode/utf8"
 
 	"github.com/gofiber/fiber/v2"
@@ -126,10 +127,20 @@ func (h *Handler) Attempt(c *fiber.Ctx) error {
 	word := c.Params("word", "")
 
 	if utf8.RuneCountInString(word) != 5 {
-		return c.SendStatus(fiber.StatusConflict)
+		return c.Status(fiber.StatusConflict).SendString("incorrect word")
 	}
 
 	ctx := c.Context()
+
+	wfRows, err := h.q.WordFreq(ctx, database.WordFreqParams{UserID: userId, Limit: 3})
+	if err != nil {
+
+		return err
+	}
+
+	if slices.ContainsFunc(wfRows, func(row database.WordFreqRow) bool { return row.UserWord == word }) {
+		return c.Status(fiber.StatusConflict).SendString("wordfreq")
+	}
 
 	fmt.Println(userId, word)
 
@@ -146,7 +157,7 @@ func (h *Handler) Attempt(c *fiber.Ctx) error {
 	wordId, err := h.q.WordId(ctx, word)
 
 	if err != nil {
-		return c.SendStatus(fiber.StatusConflict)
+		return c.Status(fiber.StatusConflict).SendString("incorrect word")
 	}
 
 	fmt.Println(wordId)
@@ -157,12 +168,12 @@ func (h *Handler) Attempt(c *fiber.Ctx) error {
 	}
 
 	if len(attempts) > 5 {
-		return c.SendStatus(fiber.StatusConflict)
+		return c.Status(fiber.StatusConflict).SendString("incorrect word")
 	}
 
 	for _, att := range attempts {
 		if att.UserWord == word {
-			return c.SendStatus(fiber.StatusConflict)
+			return c.Status(fiber.StatusConflict).SendString("incorrect word")
 		}
 	}
 
@@ -222,13 +233,13 @@ func (h *Handler) Statistics(c *fiber.Ctx) error {
 	userId := c.Locals("user_id").(int64)
 	ctx := c.Context()
 
-	wfRows, err := h.q.WordFreq(ctx, database.WordFreqParams{UserID: userId, Limit: 5})
+	wfRows, err := h.q.WordFreq(ctx, database.WordFreqParams{UserID: userId, Limit: 6})
 	if err != nil {
 
 		return err
 	}
 
-	fmt.Println(wfRows)
+	//fmt.Println(wfRows)
 
 	ca, err := h.q.CountAttempts(ctx, userId)
 

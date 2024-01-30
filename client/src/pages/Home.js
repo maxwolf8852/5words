@@ -18,6 +18,8 @@ import MonetizationOnTwoToneIcon from "@mui/icons-material/MonetizationOnTwoTone
 import StyledBackdrop from "../theme/components/StyledBackdrop";
 import StatisticsDialog from "../dialogs/StatisticsDialog";
 
+import confetti from "canvas-confetti";
+
 const Home = ({ logout }) => {
   const keyboard = useRef();
   const [coins, setCoins] = useState(null);
@@ -29,8 +31,34 @@ const Home = ({ logout }) => {
   const [usedLetters, setUsedLetters] = useState("");
   const [successLetters, setSuccessLetters] = useState("");
   const [wrongposLetters, setWrongposLetters] = useState("");
-  const [wrongWord, setWrongWord] = useState(false);
-  const [edited, setEdited] = useState(false);
+  const [wrongWord, setWrongWord] = useState();
+  const [edited, setEdited] = useState(0);
+
+  var defaults = {
+    spread: 360,
+    ticks: 50,
+    gravity: 0,
+    decay: 0.94,
+    startVelocity: 30,
+    colors: ["FFE400", "FFBD00", "E89400", "FFCA6C", "FDFFB8"],
+  };
+
+  function shoot() {
+    confetti({
+      ...defaults,
+      particleCount: 40,
+      scalar: 1.2,
+      shapes: ["star"],
+    });
+
+    confetti({
+      ...defaults,
+      particleCount: 10,
+      scalar: 0.75,
+      shapes: ["circle"],
+    });
+  }
+
   const onKeyPress = async (button) => {
     if (button === "{enter}" && curAttempt.length === 5) {
       console.log("Button pressed", button);
@@ -40,10 +68,14 @@ const Home = ({ logout }) => {
         setCurAttempt("");
         const resp2 = updateStatus();
       } else {
-        setWrongWord(true);
+        if (err.message === "wordfreq") {
+          setWrongWord(2);
+        } else {
+          setWrongWord(1);
+        }
       }
     } else {
-      setWrongWord(false);
+      setWrongWord(0);
     }
     // let [out, err] = await apiStatus();
   };
@@ -70,6 +102,14 @@ const Home = ({ logout }) => {
   useEffect(() => {
     updateStatus(false);
   }, []);
+
+  useEffect(() => {
+    if (correctWord !== "") {
+      setTimeout(shoot, 0);
+      setTimeout(shoot, 100);
+      setTimeout(shoot, 200);
+    }
+  }, [correctWord]);
 
   useEffect(() => {
     if (attempts) {
