@@ -3,9 +3,9 @@ services:
   db:
     image: "postgres:16.1-alpine"
     environment:
-      - POSTGRES_USER=maxadmin
-      - POSTGRES_PASSWORD=max3101
-      - POSTGRES_DB=main
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
       - LC_COLLATE=ru_RU.utf8
       - LC_CTYPE=ru_RU.utf8
     ports:
